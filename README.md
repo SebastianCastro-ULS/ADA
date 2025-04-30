@@ -1,4 +1,4 @@
-# 📊 Análisis Exploratorio de Datos en Redes Sociales (10M registros)
+# Análisis Exploratorio de Datos en Redes Sociales (10M registros)
 
 Este proyecto realiza un análisis exploratorio de datos (EDA) sobre un conjunto masivo de datos que representa:
 
@@ -9,7 +9,7 @@ Está diseñado para ser **rápido**, **eficiente en memoria**, y fácil de esca
 
 ---
 
-## 🗂️ Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 proyecto_eda/
@@ -26,9 +26,9 @@ proyecto_eda/
 
 ---
 
-## 🚀 Instrucciones de uso
+## Instrucciones de uso
 
-### 1. ⚙️ Requisitos
+### 1. Requisitos
 
 Asegúrate de tener Python 3.10+ instalado.
 
@@ -38,14 +38,14 @@ Instala las dependencias:
 pip install -r requirements.txt
 ```
 
-### 2. 📁 Archivos esperados
+### 2. Archivos esperados
 
 Coloca estos archivos en el directorio raíz:
 
 - `10_million_location.txt`: archivo con 10M de líneas (`lat long`)
 - `10_million_user.txt`: archivo con 10M de listas de adyacencia (separadas por espacio)
 
-### 3. ▶️ Ejecutar análisis
+### 3. Ejecutar análisis
 
 ```bash
 python main.py
@@ -55,7 +55,7 @@ Se generarán archivos `.png` con histogramas y se mostrará información estad�
 
 ---
 
-## 🔄 Flujo del Proyecto
+## Flujo del Proyecto
 
 1. **Carga de Datos (`loader.py`)**:
    - Se valida la existencia de los archivos.
@@ -73,13 +73,13 @@ Se generarán archivos `.png` con histogramas y se mostrará información estad�
 
 ---
 
-## 📌 Hallazgos del EDA
+## Hallazgos del EDA
 
-### 📍 Ubicación (lat, long)
+### Ubicación (lat, long)
 - **Distribución de latitudes y longitudes** muestra una posible concentración geográfica (por ejemplo, una región como América del Norte).
 - **Outliers detectados** en coordenadas que se salen de los rangos típicos de latitudes [-90, 90] y longitudes [-180, 180].
 
-### 👥 Red de usuarios
+### Red de usuarios
 - La mayoría de usuarios tiene entre 10 y 100 vecinos.
 - Se detectaron usuarios con más de 1000 vecinos, lo cual puede representar:
   - Influencers o hubs.
@@ -88,7 +88,7 @@ Se generarán archivos `.png` con histogramas y se mostrará información estad�
 
 ---
 
-## ⚠️ Consideraciones de rendimiento
+## Consideraciones de rendimiento
 
 - El uso de **Polars** reduce el uso de memoria y el tiempo de carga comparado con Pandas.
 - El análisis está preparado para extenderse a grafos reales (por ejemplo, NetworkX o GraphFrames si es necesario).
