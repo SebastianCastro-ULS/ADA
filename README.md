@@ -89,7 +89,3 @@ python main.py
 - **Piero Adrian Delgado Chipana**
 
 ---
-
-## Licencia
-
-Este proyecto es de uso académico y está desarrollado para fines educativos.
