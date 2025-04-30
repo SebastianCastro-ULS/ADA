@@ -1,91 +1,114 @@
-# Análisis Exploratorio de Datos de Red Social a Gran Escala
 
-## Descripción General
+# Análisis Exploratorio de Datos - Proyecto
 
-Este proyecto realiza un análisis exploratorio de datos (EDA) sobre una red social simulada a gran escala, utilizando un conjunto de datos que contiene 10 millones de ubicaciones geográficas y listas de adyacencia de usuarios.
+## Descripción
 
-El sistema está diseñado con énfasis en **eficiencia**, **uso optimizado de memoria**, **procesamiento en lote y streaming**, y una arquitectura **modular** que permite realizar EDA de manera clara y reproducible.
-
----
+Este proyecto tiene como objetivo realizar un análisis exploratorio de datos (EDA) sobre dos grandes conjuntos de datos relacionados con ubicaciones geográficas y usuarios de una red social. Utilizamos dos bibliotecas populares para el manejo de datos en Python: **Pandas** y **Polars**. Este proyecto incluye la carga eficiente de archivos grandes (10 millones de registros), estadísticas descriptivas, visualización de datos, y la detección de outliers.
 
 ## Estructura del Proyecto
 
+El proyecto está dividido en los siguientes archivos:
+
 ```
-.
-├── main.py              # Script principal que orquesta la carga y el EDA
-├── loader.py            # Módulo de carga optimizada de datos
-├── eda.py               # Módulo de análisis exploratorio (estadísticas, visualización, outliers)
-├── utils.py             # Utilidades generales (uso de memoria, logs, validaciones)
-├── 10_million_location.txt   # Archivo de ubicaciones (lat, long)
-├── 10_million_user.txt       # Archivo de listas de adyacencia
-├── README.md            # Documentación del proyecto
+├── main.py              # Script principal
+├── loader.py            # Carga eficiente y validada de datos
+├── eda.py               # Análisis exploratorio (EDA)
+├── utils.py             # Funciones auxiliares
+├── requirements.txt     # Dependencias del proyecto
 ```
 
----
+- **main.py**: Es el script principal que orquesta la carga de datos y el análisis exploratorio.
+- **loader.py**: Contiene funciones para cargar los datos de manera eficiente utilizando **Pandas** y **Polars**.
+- **eda.py**: Incluye funciones para realizar el análisis exploratorio de los datos, incluyendo visualizaciones y detección de outliers.
+- **utils.py**: Proporciona funciones auxiliares como la detección de outliers mediante el método IQR.
 
-## Instrucciones de Uso
+## Requisitos
 
-1. Instalar las dependencias:
+El proyecto depende de las siguientes bibliotecas:
+
+- **Polars**
+- **Pandas**
+- **Matplotlib**
+- **Seaborn**
+- **Numpy**
+
+Instalar las dependencias:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Ejecutar el análisis:
+## Instrucciones de Uso
+
+1. Clona el repositorio o descarga los archivos.
+2. Asegúrate de tener los archivos de datos `10_million_location.txt` y `10_million_user.txt` en la misma carpeta.
+3. Ejecuta el script principal:
+
 ```bash
 python main.py
 ```
 
-3. Los resultados visuales se guardarán automáticamente en la carpeta `output/`.
+Esto cargará los datos de ubicación y usuarios, y luego realizará un análisis exploratorio con visualizaciones y estadísticas.
 
----
+## Comparación de Carga de Datos: Pandas vs Polars
 
-## Flujo de Análisis
+### Carga de Ubicación
 
-1. **Carga eficiente de datos**
-   - Se usa `Polars` para cargas rápidas con validación de estructura.
-   - Se manejan archivos grandes usando `streaming` y `procesamiento por lotes` para minimizar el uso de memoria.
+- **Pandas**: La carga de datos con Pandas fue exitosa, pero con un tiempo ligeramente mayor debido a la sobrecarga inherente a esta biblioteca cuando se manejan grandes volúmenes de datos.
+- **Polars**: Polars, al ser una biblioteca más optimizada para el procesamiento paralelo, mostró tiempos de carga más rápidos y utilizó menos memoria en comparación con Pandas. Sin embargo, hubo problemas al realizar conversiones de tipo y algunas configuraciones de columnas que fueron resueltas en el código.
 
-2. **EDA sobre datos geográficos (`10_million_location.txt`)**
-   - Estadísticas básicas: media, mediana, desviación estándar de latitud y longitud.
-   - Visualizaciones:
-     - Histogramas de distribución geográfica
-     - Gráfico de dispersión de coordenadas
-   - Detección de outliers mediante IQR (Interquartile Range)
-   - Identificación de regiones más densas y patrones de dispersión
+**Tiempo de carga:**
 
-3. **EDA sobre listas de adyacencia (`10_million_user.txt`)**
-   - Estadísticas de conectividad por usuario: número de amigos, grado promedio, grado máximo/mínimo.
-   - Visualización del grado de conexión por usuario
-   - Detección de usuarios outliers con conexiones atípicamente altas o bajas
+- **Pandas**: 4.57 segundos
+- **Polars**: 2.93 segundos
 
----
+### Carga de Usuarios
+
+- **Pandas**: En la carga de los usuarios, Pandas también cumplió bien, pero debido a la estructura de los datos, se utilizó más memoria y un tiempo de procesamiento ligeramente más alto.
+- **Polars**: Polars resultó ser más eficiente, con tiempos de carga significativamente más bajos.
+
+**Tiempo de carga:**
+
+- **Pandas**: 11.91 segundos
+- **Polars**: 0.54 segundos
+
+## Análisis Exploratorio de Datos (EDA)
+
+### Ubicación
+
+**Estadísticas**:  
+Se obtuvieron las estadísticas descriptivas de latitudes y longitudes, que nos proporcionan un buen entendimiento de las distribuciones y rangos de los datos. Las latitudes están distribuidas principalmente entre -90 y 90 grados, mientras que las longitudes se distribuyen entre -180 y 180 grados.
+
+**Visualización**:  
+Se generaron histogramas para las latitudes y longitudes, mostrando la distribución de los puntos geográficos.
+
+- La distribución de **latitudes** muestra una forma casi uniforme con algunas concentraciones en áreas específicas.
+- La distribución de **longitudes** también muestra una distribución más dispersa.
+
+**Detección de Outliers**:  
+Se detectaron outliers utilizando el método de rango intercuartílico (IQR), y se identificaron algunas observaciones extremas tanto para latitudes como longitudes. Sin embargo, estos outliers no representaron un problema significativo y se gestionaron adecuadamente.
+
+### Usuarios
+
+**Estadísticas**:  
+El análisis de la cantidad de vecinos por usuario reveló que la mayoría de los usuarios tienen un número moderado de vecinos, con algunos usuarios extremadamente conectados. La distribución muestra una cola larga, lo que indica que hay algunos usuarios con conexiones muy altas.
+
+**Visualización**:  
+Se generaron histogramas para el número de vecinos por usuario. Se observó que la mayoría de los usuarios tienen entre 10 y 100 vecinos.
+
+**Detección de Outliers**:  
+También se detectaron outliers en el número de vecinos, con algunos usuarios mostrando un número de vecinos que podría considerarse inusualmente alto.
 
 ## Hallazgos del EDA
 
-- **Ubicación:**
-  - La mayoría de las ubicaciones están agrupadas en un rango geográfico definido (concentración alta cerca de ciertos valores de latitud/longitud).
-  - Algunos valores extremos fueron detectados y eliminados como outliers.
-  - La dispersión geográfica sugiere múltiples clústeres regionales.
+- **Distribución de Latitudes y Longitudes**: Las distribuciones son coherentes con lo que se espera de datos geográficos. No se observaron patrones anómalos, lo que indica que los datos de ubicación están bien distribuidos.
+- **Usuarios con Vecinos**: La distribución de los vecinos muestra que algunos usuarios tienen una cantidad inusualmente alta de conexiones, lo que podría indicar nodos altamente conectados o comunidades dentro de la red.
 
-- **Red de Usuarios:**
-  - El grado promedio de conexión es moderado (~5-10), pero algunos usuarios alcanzan cientos de conexiones (posibles hubs).
-  - Se detectaron usuarios sin conexiones, lo cual podría indicar nodos aislados o datos erróneos.
-  - La red podría estar formada por múltiples comunidades densas.
+## Conclusión
 
----
+El análisis exploratorio de los datos ha proporcionado una visión general útil tanto de las ubicaciones geográficas como de las conexiones de los usuarios en la red social. Los resultados obtenidos son consistentes con las expectativas, y la implementación ha mostrado ser eficiente en términos de tiempo y uso de memoria, especialmente con **Polars**.
 
-## Validación y Manejo de Recursos
+## Integrantes
 
-- Uso de `psutil` para medir el consumo de memoria en tiempo real.
-- Captura y logueo de excepciones para evitar caídas durante el análisis.
-- Procesamiento robusto que maneja errores en formatos o estructura de datos.
-- Visualizaciones y estadísticas generadas sin bloquear el sistema.
-
----
-
-## Autores
-
-- **Sebastian Adriano Castro Mamani**
+- **Sebastián Adriano Castro Mamani**
 - **Piero Adrian Delgado Chipana**
-
----
