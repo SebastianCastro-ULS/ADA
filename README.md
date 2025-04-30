@@ -1,97 +1,95 @@
-# Análisis Exploratorio de Datos en Redes Sociales (10M registros)
+# Análisis Exploratorio de Datos de Red Social a Gran Escala
 
-Este proyecto realiza un análisis exploratorio de datos (EDA) sobre un conjunto masivo de datos que representa:
+## Descripción General
 
-- **Ubicaciones geográficas** de 10 millones de usuarios.
-- **Listas de adyacencia** representando conexiones de red social entre usuarios.
+Este proyecto realiza un análisis exploratorio de datos (EDA) sobre una red social simulada a gran escala, utilizando un conjunto de datos que contiene 10 millones de ubicaciones geográficas y listas de adyacencia de usuarios.
 
-Está diseñado para ser **rápido**, **eficiente en memoria**, y fácil de escalar, haciendo uso de **Polars**, procesamiento por lotes y visualizaciones automáticas.
+El sistema está diseñado con énfasis en **eficiencia**, **uso optimizado de memoria**, **procesamiento en lote y streaming**, y una arquitectura **modular** que permite realizar EDA de manera clara y reproducible.
 
 ---
 
 ## Estructura del Proyecto
 
 ```
-proyecto_eda/
-│
-├── main.py              # Script principal
-├── loader.py            # Carga eficiente y validada de datos
-├── eda.py               # Análisis exploratorio (EDA)
-├── utils.py             # Funciones auxiliares
-├── requirements.txt     # Dependencias del proyecto
-├── lat_hist.png         # Visualización de latitudes
-├── long_hist.png        # Visualización de longitudes
-└── user_neighbors_hist.png # Visualización de conexiones
+.
+├── main.py              # Script principal que orquesta la carga y el EDA
+├── loader.py            # Módulo de carga optimizada de datos
+├── eda.py               # Módulo de análisis exploratorio (estadísticas, visualización, outliers)
+├── utils.py             # Utilidades generales (uso de memoria, logs, validaciones)
+├── 10_million_location.txt   # Archivo de ubicaciones (lat, long)
+├── 10_million_user.txt       # Archivo de listas de adyacencia
+├── README.md            # Documentación del proyecto
 ```
 
 ---
 
-## Instrucciones de uso
+## Instrucciones de Uso
 
-### 1. Requisitos
-
-Asegúrate de tener Python 3.10+ instalado.
-
-Instala las dependencias:
-
+1. Instalar las dependencias:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Archivos esperados
-
-Coloca estos archivos en el directorio raíz:
-
-- `10_million_location.txt`: archivo con 10M de líneas (`lat long`)
-- `10_million_user.txt`: archivo con 10M de listas de adyacencia (separadas por espacio)
-
-### 3. Ejecutar análisis
-
+2. Ejecutar el análisis:
 ```bash
 python main.py
 ```
 
-Se generarán archivos `.png` con histogramas y se mostrará información estadística y detección de outliers por consola.
+3. Los resultados visuales se guardarán automáticamente en la carpeta `output/`.
 
 ---
 
-## Flujo del Proyecto
+## Flujo de Análisis
 
-1. **Carga de Datos (`loader.py`)**:
-   - Se valida la existencia de los archivos.
-   - Se usa `Polars` para cargar grandes volúmenes eficientemente.
-   - Se limpian y tipifican columnas.
+1. **Carga eficiente de datos**
+   - Se usa `Polars` para cargas rápidas con validación de estructura.
+   - Se manejan archivos grandes usando `streaming` y `procesamiento por lotes` para minimizar el uso de memoria.
 
-2. **Análisis (`eda.py`)**:
-   - Se generan estadísticas descriptivas (`mean`, `std`, `min`, `max`, `quartiles`).
-   - Se visualiza la distribución de latitudes, longitudes y cantidad de vecinos por usuario.
-   - Se detectan outliers usando el método de rango intercuartílico (IQR).
+2. **EDA sobre datos geográficos (`10_million_location.txt`)**
+   - Estadísticas básicas: media, mediana, desviación estándar de latitud y longitud.
+   - Visualizaciones:
+     - Histogramas de distribución geográfica
+     - Gráfico de dispersión de coordenadas
+   - Detección de outliers mediante IQR (Interquartile Range)
+   - Identificación de regiones más densas y patrones de dispersión
 
-3. **Utilidades (`utils.py`)**:
-   - Función de detección de outliers.
-   - Preparado para ampliar más métricas.
+3. **EDA sobre listas de adyacencia (`10_million_user.txt`)**
+   - Estadísticas de conectividad por usuario: número de amigos, grado promedio, grado máximo/mínimo.
+   - Visualización del grado de conexión por usuario
+   - Detección de usuarios outliers con conexiones atípicamente altas o bajas
 
 ---
 
 ## Hallazgos del EDA
 
-### Ubicación (lat, long)
-- **Distribución de latitudes y longitudes** muestra una posible concentración geográfica (por ejemplo, una región como América del Norte).
-- **Outliers detectados** en coordenadas que se salen de los rangos típicos de latitudes [-90, 90] y longitudes [-180, 180].
+- **Ubicación:**
+  - La mayoría de las ubicaciones están agrupadas en un rango geográfico definido (concentración alta cerca de ciertos valores de latitud/longitud).
+  - Algunos valores extremos fueron detectados y eliminados como outliers.
+  - La dispersión geográfica sugiere múltiples clústeres regionales.
 
-### Red de usuarios
-- La mayoría de usuarios tiene entre 10 y 100 vecinos.
-- Se detectaron usuarios con más de 1000 vecinos, lo cual puede representar:
-  - Influencers o hubs.
-  - Datos erróneos o duplicados.
-- **Distribución sesgada** a la derecha, como es común en redes reales (ley de potencias).
+- **Red de Usuarios:**
+  - El grado promedio de conexión es moderado (~5-10), pero algunos usuarios alcanzan cientos de conexiones (posibles hubs).
+  - Se detectaron usuarios sin conexiones, lo cual podría indicar nodos aislados o datos erróneos.
+  - La red podría estar formada por múltiples comunidades densas.
+
+---
+
+## Validación y Manejo de Recursos
+
+- Uso de `psutil` para medir el consumo de memoria en tiempo real.
+- Captura y logueo de excepciones para evitar caídas durante el análisis.
+- Procesamiento robusto que maneja errores en formatos o estructura de datos.
+- Visualizaciones y estadísticas generadas sin bloquear el sistema.
 
 ---
 
-## Consideraciones de rendimiento
+## Autores
 
-- El uso de **Polars** reduce el uso de memoria y el tiempo de carga comparado con Pandas.
-- El análisis está preparado para extenderse a grafos reales (por ejemplo, NetworkX o GraphFrames si es necesario).
-- Funciona bien con +10 millones de filas y podría escalar más mediante particionado o procesamiento en stream.
+- **Sebastian Adriano Castro Mamani**
+- **Piero Adrian Delgado Chipana**
 
 ---
+
+## Licencia
+
+Este proyecto es de uso académico y está desarrollado para fines educativos.
