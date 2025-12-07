@@ -1,114 +1,401 @@
+# ♻️ Ecomun - Sistema de Gestión de Reciclaje
 
-# Análisis Exploratorio de Datos - Proyecto
+<div align="center">
 
-## Descripción
+![Flutter](https://img.shields.io/badge/Flutter-3.9.2-02569B?logo=flutter)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+![Dart](https://img.shields.io/badge/Dart-0175C2?logo=dart)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-Este proyecto tiene como objetivo realizar un análisis exploratorio de datos (EDA) sobre dos grandes conjuntos de datos relacionados con ubicaciones geográficas y usuarios de una red social. Utilizamos dos bibliotecas populares para el manejo de datos en Python: **Pandas** y **Polars**. Este proyecto incluye la carga eficiente de archivos grandes (10 millones de registros), estadísticas descriptivas, visualización de datos, y la detección de outliers.
+**Una aplicación móvil para facilitar el reciclaje y la gestión de residuos en tu comunidad**
 
-## Estructura del Proyecto
+[Características](#-características) • [Instalación](#-instalación) • [Uso](#-uso) • [Tecnologías](#-tecnologías)
 
-El proyecto está dividido en los siguientes archivos:
+</div>
 
-```
-├── main.py              # Script principal
-├── loader.py            # Carga eficiente y validada de datos
-├── eda.py               # Análisis exploratorio (EDA)
-├── utils.py             # Funciones auxiliares
-├── requirements.txt     # Dependencias del proyecto
-```
+---
 
-- **main.py**: Es el script principal que orquesta la carga de datos y el análisis exploratorio.
-- **loader.py**: Contiene funciones para cargar los datos de manera eficiente utilizando **Pandas** y **Polars**.
-- **eda.py**: Incluye funciones para realizar el análisis exploratorio de los datos, incluyendo visualizaciones y detección de outliers.
-- **utils.py**: Proporciona funciones auxiliares como la detección de outliers mediante el método IQR.
+## 📖 Descripción
 
-## Requisitos
+**Ecomun** es una aplicación móvil desarrollada con Flutter que conecta a usuarios con servicios de recolección de materiales reciclables. La plataforma permite a los usuarios registrar solicitudes de recojo, aprender sobre materiales reciclables y hacer seguimiento de su impacto ambiental.
 
-El proyecto depende de las siguientes bibliotecas:
+### 🎯 Objetivo
 
-- **Polars**
-- **Pandas**
-- **Matplotlib**
-- **Seaborn**
-- **Numpy**
+Promover prácticas de reciclaje sostenibles facilitando la gestión y recolección de materiales reciclables en comunidades urbanas, contribuyendo a la reducción de residuos y al cuidado del medio ambiente.
 
-Instalar las dependencias:
+### ✨ Características Principales
+
+- 🔐 **Autenticación de Usuarios**: Registro e inicio de sesión seguro con Firebase Authentication
+- 📋 **Gestión de Solicitudes**: Crea y gestiona solicitudes de recojo de materiales reciclables
+- ♻️ **Catálogo de Materiales**: Información detallada sobre tipos de materiales reciclables y consejos
+- 📊 **Estadísticas Personales**: Visualiza tu impacto ambiental y cantidad reciclada
+- 👤 **Perfil de Usuario**: Gestiona tu información personal y ubicación
+- 🔔 **Actualizaciones en Tiempo Real**: Sincronización automática con Firebase Firestore
+- 📱 **Diseño Responsivo**: Interfaz moderna y adaptable a diferentes dispositivos
+
+---
+
+## 🚀 Instalación
+
+### Prerrequisitos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (v3.9.2 o superior)
+- [Dart SDK](https://dart.dev/get-dart) (incluido con Flutter)
+- [Android Studio](https://developer.android.com/studio) o [Visual Studio Code](https://code.visualstudio.com/)
+- [Git](https://git-scm.com/)
+- Una cuenta de [Firebase](https://console.firebase.google.com/)
+
+### 📦 Paso 1: Clonar el Repositorio
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/tu-usuario/ecomun.git
+cd ecomun/ecomun
 ```
 
-## Instrucciones de Uso
-
-1. Clona el repositorio o descarga los archivos.
-2. Asegúrate de tener los archivos de datos `10_million_location.txt` y `10_million_user.txt` en la misma carpeta.
-3. Ejecuta el script principal:
+### 🔧 Paso 2: Instalar Dependencias
 
 ```bash
-python main.py
+flutter pub get
 ```
 
-Esto cargará los datos de ubicación y usuarios, y luego realizará un análisis exploratorio con visualizaciones y estadísticas.
+### 🔥 Paso 3: Configurar Firebase
 
-## Comparación de Carga de Datos: Pandas vs Polars
+#### 3.1 Crear Proyecto Firebase
 
-### Carga de Ubicación
+1. Ve a [Firebase Console](https://console.firebase.google.com/)
+2. Clic en **"Agregar proyecto"**
+3. Nombre del proyecto: `Ecomun`
+4. Sigue los pasos y crea el proyecto
 
-- **Pandas**: La carga de datos con Pandas fue exitosa, pero con un tiempo ligeramente mayor debido a la sobrecarga inherente a esta biblioteca cuando se manejan grandes volúmenes de datos.
-- **Polars**: Polars, al ser una biblioteca más optimizada para el procesamiento paralelo, mostró tiempos de carga más rápidos y utilizó menos memoria en comparación con Pandas. Sin embargo, hubo problemas al realizar conversiones de tipo y algunas configuraciones de columnas que fueron resueltas en el código.
+#### 3.2 Configurar Firebase en la App
 
-**Tiempo de carga:**
+**Opción A: Usar FlutterFire CLI (Recomendado)**
 
-- **Pandas**: 4.57 segundos
-- **Polars**: 2.93 segundos
+```bash
+# Instalar FlutterFire CLI
+dart pub global activate flutterfire_cli
 
-### Carga de Usuarios
+# Configurar Firebase
+flutterfire configure
+```
 
-- **Pandas**: En la carga de los usuarios, Pandas también cumplió bien, pero debido a la estructura de los datos, se utilizó más memoria y un tiempo de procesamiento ligeramente más alto.
-- **Polars**: Polars resultó ser más eficiente, con tiempos de carga significativamente más bajos.
+Selecciona tu proyecto `Ecomun` y las plataformas que desees (Android/iOS).
 
-**Tiempo de carga:**
+**Opción B: Manual**
 
-- **Pandas**: 11.91 segundos
-- **Polars**: 0.54 segundos
+Si ya tienes el archivo `firebase_options.dart`, asegúrate de que contenga tus credenciales correctas.
 
-## Análisis Exploratorio de Datos (EDA)
+#### 3.3 Habilitar Servicios Firebase
 
-### Ubicación
+**Authentication:**
+1. Firebase Console → **Authentication** → **Get Started**
+2. Pestaña **"Sign-in method"**
+3. Habilita **"Email/Password"**
+4. Guarda
 
-**Estadísticas**:  
-Se obtuvieron las estadísticas descriptivas de latitudes y longitudes, que nos proporcionan un buen entendimiento de las distribuciones y rangos de los datos. Las latitudes están distribuidas principalmente entre -90 y 90 grados, mientras que las longitudes se distribuyen entre -180 y 180 grados.
+**Firestore Database:**
+1. Firebase Console → **Firestore Database** → **Create database**
+2. Selecciona **"Start in test mode"**
+3. Elige tu región preferida
+4. Clic en **"Enable"**
 
-**Visualización**:  
-Se generaron histogramas para las latitudes y longitudes, mostrando la distribución de los puntos geográficos.
+#### 3.4 Configurar Reglas de Seguridad
 
-- La distribución de **latitudes** muestra una forma casi uniforme con algunas concentraciones en áreas específicas.
-- La distribución de **longitudes** también muestra una distribución más dispersa.
+En **Firestore Database** → **Rules**, pega el siguiente código:
 
-**Detección de Outliers**:  
-Se detectaron outliers utilizando el método de rango intercuartílico (IQR), y se identificaron algunas observaciones extremas tanto para latitudes como longitudes. Sin embargo, estos outliers no representaron un problema significativo y se gestionaron adecuadamente.
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Reglas para usuarios
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Reglas para materiales
+    match /materials/{materialId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Reglas para solicitudes
+    match /requests/{requestId} {
+      allow read: if request.auth != null && 
+                     resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && 
+                       request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && 
+                               resource.data.userId == request.auth.uid;
+    }
+  }
+}
+```
 
-### Usuarios
+Clic en **"Publish"**
 
-**Estadísticas**:  
-El análisis de la cantidad de vecinos por usuario reveló que la mayoría de los usuarios tienen un número moderado de vecinos, con algunos usuarios extremadamente conectados. La distribución muestra una cola larga, lo que indica que hay algunos usuarios con conexiones muy altas.
+---
 
-**Visualización**:  
-Se generaron histogramas para el número de vecinos por usuario. Se observó que la mayoría de los usuarios tienen entre 10 y 100 vecinos.
+## ▶️ Ejecución
 
-**Detección de Outliers**:  
-También se detectaron outliers en el número de vecinos, con algunos usuarios mostrando un número de vecinos que podría considerarse inusualmente alto.
+### Ejecutar en Modo Debug
 
-## Hallazgos del EDA
+```bash
+flutter run
+```
 
-- **Distribución de Latitudes y Longitudes**: Las distribuciones son coherentes con lo que se espera de datos geográficos. No se observaron patrones anómalos, lo que indica que los datos de ubicación están bien distribuidos.
-- **Usuarios con Vecinos**: La distribución de los vecinos muestra que algunos usuarios tienen una cantidad inusualmente alta de conexiones, lo que podría indicar nodos altamente conectados o comunidades dentro de la red.
+### Ejecutar en Dispositivo Específico
 
-## Conclusión
+```bash
+# Ver dispositivos disponibles
+flutter devices
 
-El análisis exploratorio de los datos ha proporcionado una visión general útil tanto de las ubicaciones geográficas como de las conexiones de los usuarios en la red social. Los resultados obtenidos son consistentes con las expectativas, y la implementación ha mostrado ser eficiente en términos de tiempo y uso de memoria, especialmente con **Polars**.
+# Ejecutar en dispositivo específico
+flutter run -d <device-id>
+```
 
-## Integrantes
+### Ejecutar en Modo Release (Producción)
 
-- **Sebastián Adriano Castro Mamani**
-- **Piero Adrian Delgado Chipana**
+```bash
+flutter run --release
+```
+
+### Ejecutar en Emulador
+
+**Android:**
+```bash
+# Iniciar emulador Android
+emulator -avd <nombre_emulador>
+
+# En otra terminal
+flutter run
+```
+
+**iOS (Solo en macOS):**
+```bash
+open -a Simulator
+flutter run
+```
+
+---
+
+## 🎮 Uso
+
+### Primera Ejecución
+
+1. **Registro de Usuario**
+   - Abre la aplicación
+   - Clic en **"¿No tienes cuenta? Regístrate"**
+   - Completa el formulario con:
+     - Nombre completo
+     - Correo electrónico
+     - Contraseña (mínimo 6 caracteres)
+     - Ubicación (opcional)
+   - Clic en **"Registrarse"**
+
+2. **Iniciar Sesión**
+   - Ingresa tu correo y contraseña
+   - Clic en **"Iniciar Sesión"**
+
+3. **Explorar Materiales**
+   - Desde el menú lateral → **"Materiales"**
+   - Visualiza los tipos de materiales reciclables
+   - Lee consejos sobre cómo reciclar correctamente
+
+4. **Crear Solicitud de Recojo**
+   - Desde la pantalla principal → **"Solicitar recojo"**
+   - Selecciona el tipo de material
+   - Ingresa la cantidad (kg)
+   - Selecciona la fecha
+   - Agrega observaciones (opcional)
+   - Clic en **"Enviar solicitud"**
+
+5. **Ver Estadísticas**
+   - En la pantalla principal verás:
+     - Total reciclado (kg)
+     - Solicitudes completadas
+   - Desde el menú → **"Perfil"** para más detalles
+
+---
+
+## 🛠️ Tecnologías
+
+### Frontend
+
+- **[Flutter](https://flutter.dev/)** - Framework de desarrollo multiplataforma
+- **[Dart](https://dart.dev/)** - Lenguaje de programación
+- **[Provider](https://pub.dev/packages/provider)** - Gestión de estado
+- **[GoRouter](https://pub.dev/packages/go_router)** - Navegación y routing
+
+### Backend
+
+- **[Firebase Authentication](https://firebase.google.com/products/auth)** - Autenticación de usuarios
+- **[Cloud Firestore](https://firebase.google.com/products/firestore)** - Base de datos NoSQL en tiempo real
+- **[Firebase Core](https://pub.dev/packages/firebase_core)** - Configuración de Firebase
+
+### Arquitectura
+
+- **MVVM (Model-View-ViewModel)** - Patrón de arquitectura
+- **Repository Pattern** - Capa de abstracción de datos
+- **Dependency Injection** - Inyección de dependencias con Provider
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
+ecomun/
+├── lib/
+│   ├── models/                    # Modelos de datos
+│   │   ├── user_model.dart
+│   │   ├── material_model.dart
+│   │   └── request_model.dart
+│   │
+│   ├── services/                  # Servicios de Firebase
+│   │   ├── firebase_auth_service.dart
+│   │   ├── firebase_user_service.dart
+│   │   ├── firebase_materials_service.dart
+│   │   └── firebase_requests_service.dart
+│   │
+│   ├── viewmodels/                # Lógica de negocio
+│   │   ├── auth_viewmodel.dart
+│   │   ├── user_viewmodel.dart
+│   │   ├── materials_viewmodel.dart
+│   │   └── requests_viewmodel.dart
+│   │
+│   ├── views/                     # Pantallas de la UI
+│   │   ├── login_screen.dart
+│   │   ├── register_screen.dart
+│   │   ├── home_screen.dart
+│   │   ├── profile_screen.dart
+│   │   ├── materials_info_screen.dart
+│   │   └── request_form_screen.dart
+│   │
+│   ├── widgets/                   # Componentes reutilizables
+│   │   ├── app_drawer.dart
+│   │   └── material_tile.dart
+│   │
+│   ├── app_router.dart           # Configuración de rutas
+│   ├── main.dart                 # Punto de entrada
+│   └── firebase_options.dart     # Configuración Firebase
+│
+├── android/                       # Configuración Android
+├── ios/                          # Configuración iOS
+├── web/                          # Configuración Web
+├── test/                         # Tests unitarios
+├── pubspec.yaml                  # Dependencias
+└── README.md                     # Este archivo
+```
+
+---
+
+## 🧪 Testing
+
+### Ejecutar Tests
+
+```bash
+# Todos los tests
+flutter test
+
+# Tests específicos
+flutter test test/widget_test.dart
+
+# Tests con cobertura
+flutter test --coverage
+```
+
+---
+
+## 📱 Capturas de Pantalla
+
+> Añade aquí capturas de pantalla de tu aplicación
+
+---
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Para contribuir:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add: nueva característica'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+---
+
+## 📝 Notas de Versión
+
+### v1.0.0 (Diciembre 2025)
+
+- ✅ Sistema de autenticación con Firebase
+- ✅ CRUD de solicitudes de recojo
+- ✅ Catálogo de materiales reciclables
+- ✅ Perfil de usuario
+- ✅ Estadísticas personales
+- ✅ Sincronización en tiempo real
+
+---
+
+## 🐛 Solución de Problemas
+
+### Error: "Firebase not initialized"
+
+**Solución:**
+```bash
+flutter clean
+flutter pub get
+flutter run
+```
+
+### Error: "Permission denied" en Firestore
+
+**Solución:** Verifica que las reglas de Firestore estén publicadas correctamente.
+
+### La app no carga datos
+
+**Solución:** 
+1. Verifica tu conexión a internet
+2. Revisa Firebase Console → Firestore Database
+3. Ejecuta: `flutter logs` para ver errores
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+## 👥 Autores
+
+- **Sebastian Castro** - *Desarrollo inicial* - [GitHub](https://github.com/tu-usuario)
+
+---
+
+## 🙏 Agradecimientos
+
+- Comunidad de Flutter
+- Firebase Team
+- Todos los contribuidores
+
+---
+
+## 📞 Contacto
+
+Sebastian Castro - scastrom@ulasalle.edu.pe
+
+Link del Proyecto: [https://github.com/tu-usuario/ecomun](https://github.com/tu-usuario/ecomun)
+
+---
+
+<div align="center">
+
+**Hecho con ❤️ y ♻️ para un planeta más verde**
+
+[⬆ Volver arriba](#️-ecomun---sistema-de-gestión-de-reciclaje)
+
+</div>
